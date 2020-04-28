@@ -4,13 +4,19 @@ from joblib import dump
 from sklearn import tree
 from sklearn.metrics import accuracy_score
 
-from data import load_training_dataset
+from data import load_dataset
 
 
-def train_and_save(training_set, model_file, fraction, evaluate):
-    train_X, train_y, test_X, test_y = load_training_dataset(
-        training_set, fraction, evaluate
-    )
+def train_and_save(training_set: str, model_file: str, fraction: float, evaluate: bool):
+    """Train the model and save it
+
+    Arguments:
+        training_set {str} -- URL/path of the dataset
+        model_file {str} -- path for the output model file
+        fraction {float} -- fraction of the dataset to use
+        evaluate {bool} -- should the model be evaluated on held-out set
+    """
+    train_X, train_y, test_X, test_y = load_dataset(training_set, fraction, evaluate)
 
     classifier = tree.DecisionTreeClassifier()
     classifier = classifier.fit(train_X, train_y)
@@ -35,7 +41,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--subset-fraction",
         help="Fraction of the dataset to use for training (0-1)",
-        default=0.1,
+        default=0.6,
         type=float,
     )
     parser.add_argument(
@@ -45,7 +51,6 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    print(args)
     train_and_save(
         args.training_set, args.output_model_file, args.subset_fraction, args.evaluate
     )
