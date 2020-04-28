@@ -7,6 +7,7 @@ This repository contains code for notifications bundling solution, utilizing dec
 This method does not use optimization techniques - these would require knowing what is the exact time of arrival of every tour information in the future. This solution assumes that as tours (individual notifications) arrive, it's impossible to peek into the future, so the only option is to either:
 - wait for more tours to come
 - bundle already collected tours and send them to user
+
 Such definition makes it easy to treat this problem as a binary classification problem, in which every tour information is classified as final (the notification is sent along with previous tours) or non-final (we need to wait for more tours).
 
 This approach assumes that we know how notifications should be aggregated and sent, i.e. up to four per day, as soon as possible. Having historical data with this exact behavior, it is possible to train a model predicting which action should be taken (wait or send). The simplest model does that by taking into account:
@@ -20,9 +21,9 @@ The model, without heavy parameter tuning achieves accuracy of around 91% (meani
 
 ## Usage
 
-### 1. Training (optional if using Docker)
-
 Prerequisites: Python 3.8 OR Docker
+
+### 1. Training
 
 Install the requirements:
 
